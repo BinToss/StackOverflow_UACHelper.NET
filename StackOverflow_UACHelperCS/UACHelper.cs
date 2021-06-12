@@ -3,8 +3,9 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
+using static SODNUACH.TargetFramework;
 
-namespace SODNUSCH
+namespace SODNUACH
 {
     public static class UacHelper
     {
@@ -95,8 +96,14 @@ namespace SODNUSCH
                     {
                         TOKEN_ELEVATION_TYPE elevationResult = TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault;
 
-                        int elevationResultSize = Marshal.SizeOf((int) elevationResult);
+                        int elevationResultSize;
                         uint returnedSize = 0;
+
+                        /// <see href="https://stackoverflow.com/questions/1220213/detect-if-running-as-administrator-with-or-without-elevated-privileges/17492949#comment64660906_17492949"/>
+                        /// TODO: Check Framework version at RUNTIME!
+                        if (TargetFramework.Version == Versions.NET40)
+                            elevationResultSize = Marshal.SizeOf((int) elevationResult);
+                        else elevationResultSize = Marshal.SizeOf(typeof(TOKEN_ELEVATION_TYPE));
 
                         IntPtr elevationTypePtr = Marshal.AllocHGlobal(elevationResultSize);
                         try
