@@ -1,0 +1,1 @@
+- Throw away the Compile-time constants. It's an overcomplicated solution. Instead change UACHelper.cs,L#99 to `int elevationResultSize = Marshal.SizeOf(TypeOf(int));`
