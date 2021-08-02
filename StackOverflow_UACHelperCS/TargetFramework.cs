@@ -16,6 +16,9 @@
             NET48
         }
 
+        /// <summary>
+        ///     The compile-time constant may erase the TRACE and DEBUG constants.
+        /// </summary>
         public static Versions Version
         {
             get

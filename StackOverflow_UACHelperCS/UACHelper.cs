@@ -100,8 +100,10 @@ namespace SODNUACH
                         uint returnedSize = 0;
 
                         /// <see href="https://stackoverflow.com/questions/1220213/detect-if-running-as-administrator-with-or-without-elevated-privileges/17492949#comment64660906_17492949"/>
-                        /// TODO: Check Framework version at RUNTIME!
-                        if (TargetFramework.Version == Versions.NET40)
+                        /// This if-else is necessary because the overloads <see href="https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.sizeof?view=netframework-4.5.1#System_Runtime_InteropServices_Marshal_SizeOf__1___0">
+                        /// `SizeOf<T>()` and `SizeOf<T>(T)`</see> only exist in .NET Framework 4.5.1+.
+                        /// SizeOf((int) elevationResult) is required for legacy Framework support.
+                        if (null == Type.GetType("System.Runtime.InteropServices.Marshal.SizeOf<T>()"))
                             elevationResultSize = Marshal.SizeOf((int) elevationResult);
                         else elevationResultSize = Marshal.SizeOf(typeof(TOKEN_ELEVATION_TYPE));
 
